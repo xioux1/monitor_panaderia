@@ -3,7 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+html, body {
+  margin: 0; padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
 body {
   background: #000;
   font-family: "Inter Tight", system-ui, sans-serif;
@@ -12,8 +16,9 @@ body {
 }
 
 .pm-root {
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
+  overflow: hidden;
   background: var(--bg);
   color: var(--text);
   display: grid;
@@ -214,10 +219,15 @@ body {
 .pm-hero-time { font-variant-numeric: tabular-nums; }
 
 /* ─── List ─────────────────────────────────────────────────── */
+/* The section fills the 1fr grid row; overflow must be hidden at every level */
+.pm-root > * { min-height: 0; }
+
 .pm-list-wrap {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
+  height: 100%;
 }
 
 .pm-list-head,
@@ -256,7 +266,10 @@ body {
   gap: 0;
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
+.pm-list::-webkit-scrollbar { display: none; }
 
 .pm-row {
   border-bottom: 1px solid var(--border);
