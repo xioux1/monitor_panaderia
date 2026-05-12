@@ -247,6 +247,10 @@ body {
   grid-template-columns: 56px 160px minmax(0, 1fr) 150px 260px;
 }
 
+/* density only adjusts font size now — rows always fill available height */
+.pm-row[data-density="compact"] { font-size: 18px; }
+.pm-row[data-density="comfy"]   { font-size: 28px; }
+
 .pm-list-head {
   font-size: 14px;
   font-weight: 600;
@@ -272,15 +276,19 @@ body {
 .pm-list::-webkit-scrollbar { display: none; }
 
 .pm-row {
+  flex: 1;
+  min-height: 0;
   border-bottom: 1px solid var(--border);
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding: 0 28px;
   font-size: 24px;
   position: relative;
   animation: pm-row-in .55s cubic-bezier(.2,.7,.2,1) both;
+  /* re-declare grid so padding overrides the shared rule */
+  display: grid;
+  grid-template-columns: 56px 160px minmax(0, 1fr) 140px minmax(320px, 420px);
+  align-items: center;
+  gap: 32px;
 }
-.pm-row[data-density="compact"] { padding-top: 20px; padding-bottom: 20px; font-size: 20px; }
-.pm-row[data-density="comfy"]   { padding-top: 38px; padding-bottom: 38px; font-size: 28px; }
 
 @keyframes pm-row-in {
   0%   { opacity: 0; transform: translateY(-12px); filter: blur(4px); }
