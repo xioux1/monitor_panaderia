@@ -35,20 +35,56 @@ function resolveMethod(methodId) {
 }
 
 // ─── Derive friendly name from email prefix ──────────────────────────────
-// MP's DB only stores payer_email; we titleCase the local-part for the row.
+// Sorted longest-first so "ezequiel" matches before "ez", "juanjo" before "juan"
+const _NAMES = [
+  "alejandro","alejandra","maximiliano","maximiliana","florencia","sebastian",
+  "valentina","valentino","carolina","ezequiel","federico","gabriela","agustina",
+  "marcela","mariana","daniela","patricia","claudia","lorena","viviana","silvana",
+  "mariela","soledad","virginia","fernanda","jimena","stefania","cristian",
+  "gonzalo","leandro","rodrigo","damian","facundo","agustin","ignacio","maximo",
+  "lautaro","santiago","joaquin","bautista","roberto","miguel","carlos","sergio",
+  "gustavo","claudio","marcelo","javier","hernan","ramiro","walter","flavio",
+  "antonio","manuel","andres","alberto","hector","ernesto","juanjo","juanma",
+  "mateo","tomas","franco","roman","brian","lucas","ariel","oscar","emilio",
+  "horacio","raul","alfredo","hugo","ruben","mario","jorge","pablo","diego",
+  "pedro","luis","jose","juan","alan","fede","sabrina","melina","melisa",
+  "gisela","celeste","magali","daiana","ayelen","brenda","johana","yamila",
+  "carina","karina","nadia","sonia","monica","susana","graciela","silvia",
+  "beatriz","norma","elena","mirta","alicia","andrea","valeria","vanesa",
+  "natalia","veronica","paula","julia","lucia","sofia","camila","micaela",
+  "belen","noelia","romina","sandra","laura","maria","yesica","jessica",
+  "mercedes","adriana","paola","cecilia","roxana","delia","irma","rita",
+  "nora","olga","ines","elisa","rosa","ana",
+].sort((a, b) => b.length - a.length);
+
 function nameFromEmail(email) {
   if (!email) return { payerFirst: "—", payerLast: "" };
   const local = String(email).split("@")[0] || "";
   if (!local) return { payerFirst: email, payerLast: "" };
-  const parts = local
-    .replace(/[._\-+]+/g, " ")
-    .replace(/\d+/g, "")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
-  if (parts.length === 0) return { payerFirst: email, payerLast: "" };
-  return { payerFirst: parts[0], payerLast: parts.slice(1).join(" ") };
+
+  const stripped = local.replace(/[._\-+]+/g, " ").replace(/\d+/g, "").trim();
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+
+  // If separators already split the name, use parts directly
+  const parts = stripped.split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return { payerFirst: cap(parts[0]), payerLast: parts.slice(1).map(cap).join(" ") };
+  if (parts.length === 0) return { payerFirst: cap(local), payerLast: "" };
+
+  // Single concatenated word — try dictionary split from the start (firstname+lastname)
+  const word = parts[0].toLowerCase();
+  for (const name of _NAMES) {
+    if (word.startsWith(name) && word.length > name.length) {
+      return { payerFirst: cap(name), payerLast: cap(word.slice(name.length)) };
+    }
+  }
+  // Try from the end (lastname+firstname)
+  for (const name of _NAMES) {
+    if (word.endsWith(name) && word.length > name.length) {
+      return { payerFirst: cap(name), payerLast: cap(word.slice(0, word.length - name.length)) };
+    }
+  }
+
+  return { payerFirst: cap(parts[0]), payerLast: "" };
 }
 
 // ─── Normalize an MP payment row from /api/payments ─────────────────────
