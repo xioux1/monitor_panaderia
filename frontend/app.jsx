@@ -6,7 +6,7 @@
 const { useState, useEffect, useRef, useMemo } = React;
 
 const POLL_INTERVAL = 5_000;        // ms — server polls MP every 5s too
-const MAX_ROWS = 10;
+const MAX_ROWS = 8;
 
 // ─── MercadoPago payment_method_id → label/short ─────────────────────────
 const METHOD_MAP = {
@@ -277,9 +277,9 @@ const THEMES = {
 // ─── App ────────────────────────────────────────────────────────────────
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "midnight",
-  "showHero": true,
+  "showHero": false,
   "density": "regular",
-  "showId": true
+  "showId": false
 }/*EDITMODE-END*/;
 
 function App() {
