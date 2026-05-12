@@ -12,9 +12,6 @@ async function fetchRecentPayments() {
     sort: 'date_created',
     criteria: 'desc',
     limit: '20',
-    range: 'date_created',
-    begin_date: 'NOW-1HOURS',
-    end_date: 'NOW',
   });
 
   const res = await fetch(`${BASE_URL}/v1/payments/search?${params}`, {
