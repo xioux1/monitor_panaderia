@@ -294,23 +294,6 @@ function App() {
 
   return (
     <div className="pm-root" style={themeVars} data-show-id={t.showId ? "1" : "0"}>
-      <header className="pm-header">
-        <div className="pm-brand">
-          <div className="pm-brand-mark">
-            <span className="pm-brand-bar" />
-            <span className="pm-brand-bar" />
-            <span className="pm-brand-bar" />
-          </div>
-          <div className="pm-brand-text">
-            <div className="pm-brand-title">Panadería · Monitor</div>
-            <div className="pm-brand-sub">Transferencias en tiempo real</div>
-          </div>
-        </div>
-        <div className="pm-header-right">
-          <StatusPill connected={connected} lastSyncAt={lastSyncAt} now={now} />
-          <Clock now={now} />
-        </div>
-      </header>
 
       {isEmpty ? (
         <EmptyState hasLoaded={hasLoaded} />
