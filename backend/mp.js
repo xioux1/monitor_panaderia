@@ -6,14 +6,15 @@ const BASE_URL = 'https://api.mercadopago.com';
 
 async function fetchRecentPayments() {
   const token = process.env.MP_ACCESS_TOKEN;
-  const beginDate = new Date(Date.now() - 60 * 60 * 1000).toISOString();
 
   const params = new URLSearchParams({
     status: 'approved',
     sort: 'date_created',
     criteria: 'desc',
     limit: '20',
-    begin_date: beginDate,
+    range: 'date_created',
+    begin_date: 'NOW-1HOURS',
+    end_date: 'NOW',
   });
 
   const res = await fetch(`${BASE_URL}/v1/payments/search?${params}`, {
