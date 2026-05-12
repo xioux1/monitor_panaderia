@@ -315,13 +315,19 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.pm-row-name-line {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  overflow: hidden;
+  min-width: 0;
+}
 .pm-row-name {
   font-size: 52px;
   font-weight: 700;
   color: var(--text);
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .pm-row-lastname {
   font-size: 36px;
@@ -337,10 +343,12 @@ body {
   font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   color: var(--text-faint);
+  opacity: 0.55;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-top: 4px;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .pm-row-method-chip {

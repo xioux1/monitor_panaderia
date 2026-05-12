@@ -201,9 +201,11 @@ function PaymentRow({ p, idx, now, isNewest, density }) {
         <div className="pm-row-time-abs">{TIME.format(new Date(p.dateCreated))}</div>
       </div>
       <div className="pm-row-payer">
-        <div className="pm-row-name">{p.payerFirst}</div>
+        <div className="pm-row-name-line">
+          <span className="pm-row-name">{p.payerFirst}</span>
+          {p.payerEmail && <span className="pm-row-email">{p.payerEmail}</span>}
+        </div>
         {p.payerLast && <div className="pm-row-lastname">{p.payerLast}</div>}
-        <div className="pm-row-email">{p.payerEmail || "—"}</div>
       </div>
       <div className="pm-row-method">
         <span className="pm-row-method-chip">{p.method.short}</span>
