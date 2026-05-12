@@ -2,7 +2,7 @@
 const { useState, useEffect, useRef, useMemo } = React;
 
 const POLL_INTERVAL = 5_000;
-const MAX_ROWS = 8;
+const MAX_ROWS = 6;
 
 const METHOD_MAP = {
   account_money: { label: "Dinero en cuenta",  short: "MP" },
@@ -157,7 +157,6 @@ function PaymentRow({ p, idx, now, isNewest, density }) {
       </div>
       <div className="pm-row-payer">
         <div className="pm-row-name">{p.payerName}</div>
-        <div className="pm-row-email">{p.payerEmail || "—"}</div>
       </div>
       <div className="pm-row-method">
         <span className="pm-row-method-chip">{p.method.short}</span>
