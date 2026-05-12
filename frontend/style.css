@@ -323,14 +323,14 @@ body {
 }
 
 .pm-row-time-rel {
-  font-size: 22px;
+  font-size: clamp(14px, 1.8vh, 22px);
   color: var(--text);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .pm-row-time-abs {
   font-family: "JetBrains Mono", monospace;
-  font-size: 16px;
+  font-size: clamp(11px, 1.3vh, 16px);
   color: var(--text-faint);
   margin-top: 4px;
   font-variant-numeric: tabular-nums;
@@ -344,14 +344,14 @@ body {
   min-width: 0;
 }
 .pm-row-name {
-  font-size: 52px;
+  font-size: clamp(24px, 4.2vh, 52px);
   font-weight: 700;
   color: var(--text);
   white-space: nowrap;
   flex-shrink: 0;
 }
 .pm-row-lastname {
-  font-size: 36px;
+  font-size: clamp(17px, 2.8vh, 36px);
   font-weight: 500;
   color: var(--text-dim);
   overflow: hidden;
@@ -374,11 +374,11 @@ body {
 
 .pm-row-method-chip {
   display: inline-block;
-  padding: 8px 18px;
+  padding: clamp(4px, 0.6vh, 8px) 18px;
   border-radius: 10px;
   background: var(--surface-2);
   border: 1px solid var(--border);
-  font-size: 18px;
+  font-size: clamp(13px, 1.6vh, 18px);
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-dim);
@@ -388,7 +388,7 @@ body {
 
 .pm-row-amount {
   text-align: right;
-  font-size: 64px;
+  font-size: clamp(36px, 5.5vh, 64px);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -396,8 +396,8 @@ body {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.pm-row[data-density="compact"] .pm-row-amount { font-size: 52px; }
-.pm-row[data-density="comfy"]   .pm-row-amount { font-size: 76px; }
+.pm-row[data-density="compact"] .pm-row-amount { font-size: clamp(28px, 4.5vh, 52px); }
+.pm-row[data-density="comfy"]   .pm-row-amount { font-size: clamp(44px, 6.5vh, 76px); }
 
 .pm-row-amount-sign {
   color: var(--ok);
