@@ -6,7 +6,7 @@
 const { useState, useEffect, useRef, useMemo } = React;
 
 const POLL_INTERVAL = 5_000;        // ms — server polls MP every 5s too
-const MAX_ROWS = 8;
+const MAX_ROWS = 6;
 
 // ─── MercadoPago payment_method_id → label/short ─────────────────────────
 const METHOD_MAP = {

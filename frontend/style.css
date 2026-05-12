@@ -17,9 +17,9 @@ body {
   background: var(--bg);
   color: var(--text);
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  padding: 28px 36px 20px;
-  gap: 22px;
+  grid-template-rows: auto 1fr auto;
+  padding: 32px 48px 24px;
+  gap: 28px;
   font-feature-settings: "ss01", "cv11";
 }
 
@@ -223,10 +223,10 @@ body {
 .pm-list-head,
 .pm-row {
   display: grid;
-  grid-template-columns: 56px 160px minmax(0, 1fr) 150px 260px;
+  grid-template-columns: 64px 180px minmax(0, 1fr) 170px 300px;
   align-items: center;
-  gap: 24px;
-  padding: 0 24px;
+  gap: 32px;
+  padding: 0 28px;
 }
 
 /* ID column always hidden — not useful at distance */
@@ -238,12 +238,12 @@ body {
 }
 
 .pm-list-head {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-faint);
-  padding-bottom: 14px;
+  padding-bottom: 18px;
   padding-top: 4px;
   border-bottom: 1px solid var(--border);
 }
@@ -260,14 +260,14 @@ body {
 
 .pm-row {
   border-bottom: 1px solid var(--border);
-  padding-top: 22px;
-  padding-bottom: 22px;
-  font-size: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-size: 24px;
   position: relative;
   animation: pm-row-in .55s cubic-bezier(.2,.7,.2,1) both;
 }
-.pm-row[data-density="compact"] { padding-top: 15px; padding-bottom: 15px; font-size: 17px; }
-.pm-row[data-density="comfy"]   { padding-top: 30px; padding-bottom: 30px; font-size: 24px; }
+.pm-row[data-density="compact"] { padding-top: 20px; padding-bottom: 20px; font-size: 20px; }
+.pm-row[data-density="comfy"]   { padding-top: 38px; padding-bottom: 38px; font-size: 28px; }
 
 @keyframes pm-row-in {
   0%   { opacity: 0; transform: translateY(-12px); filter: blur(4px); }
@@ -295,28 +295,28 @@ body {
 
 .pm-row-num {
   font-family: "JetBrains Mono", monospace;
-  font-size: 15px;
+  font-size: 18px;
   color: var(--text-faint);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
 .pm-row-time-rel {
-  font-size: 19px;
+  font-size: 22px;
   color: var(--text);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .pm-row-time-abs {
   font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-faint);
-  margin-top: 3px;
+  margin-top: 4px;
   font-variant-numeric: tabular-nums;
 }
 
 .pm-row-name {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 600;
   color: var(--text);
   overflow: hidden;
@@ -327,34 +327,29 @@ body {
 
 .pm-row-method-chip {
   display: inline-block;
-  padding: 6px 14px;
-  border-radius: 8px;
+  padding: 8px 18px;
+  border-radius: 10px;
   background: var(--surface-2);
   border: 1px solid var(--border);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-dim);
 }
 
-.pm-row-id {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  color: var(--text-faint);
-  font-variant-numeric: tabular-nums;
-}
+.pm-row-id { display: none; }
 
 .pm-row-amount {
   text-align: right;
-  font-size: 30px;
+  font-size: 38px;
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.pm-row[data-density="compact"] .pm-row-amount { font-size: 24px; }
-.pm-row[data-density="comfy"]   .pm-row-amount { font-size: 36px; }
+.pm-row[data-density="compact"] .pm-row-amount { font-size: 30px; }
+.pm-row[data-density="comfy"]   .pm-row-amount { font-size: 46px; }
 
 .pm-row-amount-sign {
   color: var(--ok);
