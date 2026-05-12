@@ -31,7 +31,7 @@ body {
 .pm-list-head,
 .pm-row {
   display: grid;
-  grid-template-columns: 64px 180px minmax(0, 1fr) 170px 300px;
+  grid-template-columns: 56px 160px minmax(0, 1fr) 140px minmax(320px, 420px);
   align-items: center;
   gap: 32px;
   padding: 0 28px;
@@ -139,20 +139,23 @@ body {
 
 .pm-row-amount {
   text-align: right;
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
   color: var(--text);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.pm-row[data-density="compact"] .pm-row-amount { font-size: 30px; }
-.pm-row[data-density="comfy"]   .pm-row-amount { font-size: 46px; }
+.pm-row[data-density="compact"] .pm-row-amount { font-size: 52px; }
+.pm-row[data-density="comfy"]   .pm-row-amount { font-size: 76px; }
 
 .pm-row-amount-sign {
   color: var(--ok);
-  margin-right: 4px;
-  font-weight: 500;
+  margin-right: 2px;
+  font-weight: 600;
+  font-size: .6em;
+  vertical-align: super;
 }
 
 /* ─── Footer ─────────────────────────────────────────────────── */
