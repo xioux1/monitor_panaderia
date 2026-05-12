@@ -323,6 +323,16 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.pm-row-lastname {
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+  letter-spacing: -0.01em;
+}
 .pm-row-email { display: none; }
 
 .pm-row-method-chip {

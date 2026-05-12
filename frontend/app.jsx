@@ -37,17 +37,18 @@ function resolveMethod(methodId) {
 // ─── Derive friendly name from email prefix ──────────────────────────────
 // MP's DB only stores payer_email; we titleCase the local-part for the row.
 function nameFromEmail(email) {
-  if (!email) return "—";
+  if (!email) return { payerFirst: "—", payerLast: "" };
   const local = String(email).split("@")[0] || "";
-  if (!local) return email;
-  return local
+  if (!local) return { payerFirst: email, payerLast: "" };
+  const parts = local
     .replace(/[._\-+]+/g, " ")
     .replace(/\d+/g, "")
     .trim()
     .split(/\s+/)
     .filter(Boolean)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    .join(" ") || email;
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  if (parts.length === 0) return { payerFirst: email, payerLast: "" };
+  return { payerFirst: parts[0], payerLast: parts.slice(1).join(" ") };
 }
 
 // ─── Normalize an MP payment row from /api/payments ─────────────────────
@@ -55,7 +56,7 @@ function normalizePayment(raw) {
   return {
     id: String(raw.payment_id),
     payerEmail: raw.payer_email || null,
-    payerName: nameFromEmail(raw.payer_email),
+    ...nameFromEmail(raw.payer_email),
     method: resolveMethod(raw.payment_method_id),
     amount: Number(raw.amount) || 0,
     status: raw.status || "approved",
@@ -170,7 +171,7 @@ function HeroLatest({ payment, now, accent }) {
       </div>
       <div className="pm-hero-amount">{ARS.format(payment.amount)}</div>
       <div className="pm-hero-meta">
-        <span className="pm-hero-payer">{payment.payerName}</span>
+        <span className="pm-hero-payer">{payment.payerFirst}{payment.payerLast ? " " + payment.payerLast : ""}</span>
         <span className="pm-hero-sep">·</span>
         <span className="pm-hero-method">{payment.method.label}</span>
         <span className="pm-hero-sep">·</span>
@@ -195,7 +196,8 @@ function PaymentRow({ p, idx, now, isNewest, density }) {
         <div className="pm-row-time-abs">{TIME.format(new Date(p.dateCreated))}</div>
       </div>
       <div className="pm-row-payer">
-        <div className="pm-row-name">{p.payerName}</div>
+        <div className="pm-row-name">{p.payerFirst}</div>
+        {p.payerLast && <div className="pm-row-lastname">{p.payerLast}</div>}
         <div className="pm-row-email">{p.payerEmail || "—"}</div>
       </div>
       <div className="pm-row-method">
