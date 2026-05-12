@@ -390,13 +390,7 @@ function App() {
       )}
 
       <footer className="pm-footer">
-        <span className="pm-footer-item">
-          Mostrando últimas {t.showHero ? MAX_ROWS - 1 : MAX_ROWS} transferencias
-        </span>
-        <span className="pm-footer-dot">·</span>
-        <span className="pm-footer-item">MercadoPago API v1</span>
-        <span className="pm-footer-dot">·</span>
-        <span className="pm-footer-item">Actualización automática cada 5 s</span>
+        <img src="/logo.svg" className="pm-footer-logo" alt="Panadería Rubiño" />
       </footer>
 
       <TweaksPanel>

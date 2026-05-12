@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 140" width="480" height="140">
+  <text x="240" y="44" text-anchor="middle"
+        font-family="'Inter Tight', system-ui, sans-serif"
+        font-size="22" font-weight="600" letter-spacing="10"
+        fill="#8B1212">PANADERIA</text>
+  <text x="240" y="126" text-anchor="middle"
+        font-family="'Inter Tight', system-ui, sans-serif"
+        font-size="96" font-weight="800" letter-spacing="-3"
+        fill="#8B1212">RUBIÑO</text>
+</svg>
