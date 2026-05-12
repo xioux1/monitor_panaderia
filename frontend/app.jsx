@@ -35,7 +35,7 @@ function resolveMethod(methodId) {
 }
 
 // ─── Derive friendly name from email prefix ──────────────────────────────
-// Fallback when MP doesn't return first_name/last_name fields.
+// MP's DB only stores payer_email; we titleCase the local-part for the row.
 function nameFromEmail(email) {
   if (!email) return { payerFirst: "—", payerLast: "" };
   const local = String(email).split("@")[0] || "";
@@ -303,7 +303,7 @@ const THEMES = {
 
 // ─── App ────────────────────────────────────────────────────────────────
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme": "midnight",
+  "theme": "paper",
   "showHero": false,
   "density": "regular",
   "showId": false
@@ -315,7 +315,7 @@ function App() {
   const now = useNow(1000);
   useAutoReload(30_000);
 
-  const themeVars = THEMES[t.theme] || THEMES.midnight;
+  const themeVars = THEMES[t.theme] || THEMES.paper;
   const latest = payments[0];
   const rows = t.showHero ? payments.slice(1, MAX_ROWS) : payments.slice(0, MAX_ROWS);
   const isEmpty = payments.length === 0;
