@@ -3,47 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bakery Monitor — Pagos MP</title>
+  <title>Panadería · Monitor de transferencias</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Bakery Monitor</h1>
-    <span id="status-indicator" class="status-dot"></span>
-  </header>
+  <div id="root"></div>
 
-  <main>
-    <section class="summary">
-      <div class="card" id="card-total">
-        <h2>Total hoy</h2>
-        <p class="amount" id="total-amount">—</p>
-        <p class="card-sub" id="total-sub"></p>
-      </div>
-      <div class="card" id="card-count">
-        <h2>Pagos aprobados hoy</h2>
-        <p class="amount" id="approved-count">—</p>
-      </div>
-    </section>
+  <!-- React + Babel via CDN; no build step needed. -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
-    <section class="payments">
-      <h2>Últimos pagos</h2>
-      <table id="payments-table">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Medio de pago</th>
-            <th>Pagador</th>
-            <th>Monto</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody id="payments-body">
-          <tr><td colspan="5">Cargando...</td></tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
-
-  <script src="app.js"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
 </body>
 </html>
