@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bakery Monitor — Pagos MP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Bakery Monitor</h1>
+    <span id="status-indicator" class="status-dot"></span>
+  </header>
+
+  <main>
+    <section class="summary">
+      <div class="card" id="card-total">
+        <h2>Total hoy</h2>
+        <p class="amount" id="total-amount">—</p>
+      </div>
+      <div class="card" id="card-count">
+        <h2>Pagos aprobados</h2>
+        <p class="amount" id="approved-count">—</p>
+      </div>
+    </section>
+
+    <section class="payments">
+      <h2>Últimos pagos</h2>
+      <table id="payments-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Pagador</th>
+            <th>Monto</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="payments-body">
+          <tr><td colspan="5">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

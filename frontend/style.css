@@ -1,0 +1,76 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #f5f5f5;
+  color: #1a1a1a;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background: #2d6a4f;
+  color: #fff;
+}
+
+header h1 { font-size: 1.4rem; }
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+}
+.status-dot.connected { background: #52b788; }
+
+main { padding: 24px; max-width: 960px; margin: 0 auto; }
+
+.summary {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card {
+  flex: 1;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+.card h2 { font-size: .85rem; color: #666; margin-bottom: 8px; }
+.card .amount { font-size: 2rem; font-weight: 700; }
+
+.payments h2 { font-size: 1rem; margin-bottom: 12px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+th, td {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: .9rem;
+}
+
+thead tr { background: #2d6a4f; color: #fff; }
+tbody tr:nth-child(even) { background: #f9f9f9; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: .78rem;
+  font-weight: 600;
+}
+.badge.approved { background: #d8f3dc; color: #1b4332; }
+.badge.pending  { background: #fff3cd; color: #856404; }
+.badge.rejected { background: #fde8e8; color: #991b1b; }
