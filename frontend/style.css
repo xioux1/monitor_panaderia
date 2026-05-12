@@ -316,8 +316,8 @@ body {
 }
 
 .pm-row-name {
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 36px;
+  font-weight: 700;
   color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
