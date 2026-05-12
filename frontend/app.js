@@ -1,6 +1,6 @@
 'use strict';
 
-const POLL_INTERVAL = 30_000; // ms
+const POLL_INTERVAL = 5_000; // ms
 
 const tbody = document.getElementById('payments-body');
 const totalAmountEl = document.getElementById('total-amount');
