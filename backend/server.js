@@ -9,11 +9,14 @@ const { initDb, upsertPayment, listPayments } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const SERVER_VERSION = process.env.RENDER_GIT_COMMIT || String(Date.now());
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 let lastSyncAt = null;
+
+app.get('/api/version', (_req, res) => res.json({ version: SERVER_VERSION }));
 
 app.get('/api/payments', async (_req, res) => {
   try {
