@@ -333,7 +333,15 @@ body {
   margin-top: 2px;
   letter-spacing: -0.01em;
 }
-.pm-row-email { display: none; }
+.pm-row-email {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: var(--text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 4px;
+}
 
 .pm-row-method-chip {
   display: inline-block;
