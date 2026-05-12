@@ -416,9 +416,9 @@ body {
   border-top: 1px solid var(--border);
 }
 .pm-footer-logo {
-  height: 48px;
+  height: 72px;
   width: auto;
-  opacity: 0.82;
+  opacity: 0.85;
 }
 
 /* ─── Responsive guards ───────────────────────────────────── */
