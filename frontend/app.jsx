@@ -53,10 +53,15 @@ function nameFromEmail(email) {
 
 // ─── Normalize an MP payment row from /api/payments ─────────────────────
 function normalizePayment(raw) {
+  const fromEmail = nameFromEmail(raw.payer_email);
+  const cap = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
+  const payerFirst = raw.payer_first_name ? cap(raw.payer_first_name) : fromEmail.payerFirst;
+  const payerLast  = raw.payer_last_name  ? cap(raw.payer_last_name)  : fromEmail.payerLast;
   return {
     id: String(raw.payment_id),
     payerEmail: raw.payer_email || null,
-    ...nameFromEmail(raw.payer_email),
+    payerFirst,
+    payerLast,
     method: resolveMethod(raw.payment_method_id),
     amount: Number(raw.amount) || 0,
     status: raw.status || "approved",
