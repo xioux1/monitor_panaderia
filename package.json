@@ -4,12 +4,11 @@
   "description": "Dashboard para ver pagos de Mercado Pago en tiempo real",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
+    "start": "node --experimental-sqlite backend/server.js",
+    "dev": "nodemon --exec \"node --experimental-sqlite\" backend/server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "better-sqlite3": "^9.4.3",
     "dotenv": "^16.4.5",
     "node-fetch": "^2.7.0"
   },

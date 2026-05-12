@@ -1,9 +1,9 @@
 'use strict';
 
-const Database = require('better-sqlite3');
+const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 
-const db = new Database(path.join(__dirname, '..', 'payments.db'));
+const db = new DatabaseSync(path.join(__dirname, '..', 'payments.db'));
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS payments (
@@ -20,7 +20,7 @@ const upsertStmt = db.prepare(`
   INSERT OR IGNORE INTO payments
     (payment_id, amount, status, payment_method_id, date_created, payer_email)
   VALUES
-    (@payment_id, @amount, @status, @payment_method_id, @date_created, @payer_email)
+    (:payment_id, :amount, :status, :payment_method_id, :date_created, :payer_email)
 `);
 
 function upsertPayment(payment) {
