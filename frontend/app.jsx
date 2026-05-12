@@ -94,6 +94,24 @@ function relativeAgo(iso, nowMs) {
 }
 
 // ─── Hooks ───────────────────────────────────────────────────────────────
+function useAutoReload(intervalMs = 30_000) {
+  useEffect(() => {
+    let knownVersion = null;
+    async function check() {
+      try {
+        const res = await fetch("/api/version", { cache: "no-store" });
+        if (!res.ok) return;
+        const { version } = await res.json();
+        if (knownVersion === null) { knownVersion = version; return; }
+        if (knownVersion !== version) window.location.reload();
+      } catch (_) {}
+    }
+    check();
+    const id = setInterval(check, intervalMs);
+    return () => clearInterval(id);
+  }, [intervalMs]);
+}
+
 function useNow(intervalMs = 1000) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -295,6 +313,7 @@ function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const { payments, lastSyncAt, connected, hasLoaded } = usePaymentsFeed();
   const now = useNow(1000);
+  useAutoReload(30_000);
 
   const themeVars = THEMES[t.theme] || THEMES.midnight;
   const latest = payments[0];
