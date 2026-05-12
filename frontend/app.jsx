@@ -52,7 +52,6 @@ function normalizePayment(raw) {
 
 const ARS = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 const TIME = new Intl.DateTimeFormat("es-AR", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-const DATE_LONG = new Intl.DateTimeFormat("es-AR", { weekday: "long", day: "numeric", month: "long" });
 
 function relativeAgo(iso, nowMs) {
   const ms = nowMs - new Date(iso).getTime();
@@ -102,53 +101,10 @@ function usePaymentsFeed() {
   return { payments, lastSyncAt, connected, hasLoaded };
 }
 
-function StatusPill({ connected, lastSyncAt, now }) {
-  const ageS = lastSyncAt ? Math.floor((now - lastSyncAt) / 1000) : null;
-  const ok = connected && ageS != null && ageS < 15;
-  return (
-    <div className={`pm-pill ${ok ? "ok" : "warn"}`}>
-      <span className="pm-pill-dot" />
-      <span className="pm-pill-text">{ok ? "Conectado a Mercado Pago" : "Reconectando…"}</span>
-      {ageS != null && <span className="pm-pill-sub">· sinc. {ageS}s</span>}
-    </div>
-  );
-}
-
-function Clock({ now }) {
-  const d = new Date(now);
-  return (
-    <div className="pm-clock">
-      <span className="pm-time">{TIME.format(d)}</span>
-      <span className="pm-date">{DATE_LONG.format(d)}</span>
-    </div>
-  );
-}
-
-function HeroLatest({ payment, now, accent }) {
-  if (!payment) return null;
-  const justArrived = now - new Date(payment.dateCreated).getTime() < 8000;
-  return (
-    <div className={`pm-hero ${justArrived ? "pulse" : ""}`}>
-      <div className="pm-hero-label">
-        <span className="pm-hero-dot" style={{ background: accent }} />
-        Última transferencia
-      </div>
-      <div className="pm-hero-amount">{ARS.format(payment.amount)}</div>
-      <div className="pm-hero-meta">
-        <span className="pm-hero-payer">{payment.payerName}</span>
-        <span className="pm-hero-sep">·</span>
-        <span className="pm-hero-method">{payment.method.label}</span>
-        <span className="pm-hero-sep">·</span>
-        <span className="pm-hero-time">{relativeAgo(payment.dateCreated, now)}</span>
-      </div>
-    </div>
-  );
-}
-
-function PaymentRow({ p, idx, now, isNewest, density }) {
+function PaymentRow({ p, idx, now, density }) {
   const justArrived = now - new Date(p.dateCreated).getTime() < 6000;
   return (
-    <div className={`pm-row ${justArrived && isNewest ? "fresh" : ""}`}
+    <div className={`pm-row ${justArrived && idx === 0 ? "fresh" : ""}`}
          data-density={density} style={{ "--row-i": idx }}>
       <div className="pm-row-num">{String(idx + 1).padStart(2, "0")}</div>
       <div className="pm-row-time">
@@ -161,7 +117,6 @@ function PaymentRow({ p, idx, now, isNewest, density }) {
       <div className="pm-row-method">
         <span className="pm-row-method-chip">{p.method.short}</span>
       </div>
-      <div className="pm-row-id">#{p.id.slice(-6)}</div>
       <div className="pm-row-amount">
         <span className="pm-row-amount-sign">+</span>{ARS.format(p.amount)}
       </div>
@@ -175,7 +130,6 @@ function EmptyState({ hasLoaded }) {
       <div className="pm-empty-title">
         {hasLoaded ? "Esperando primera transferencia…" : "Conectando con Mercado Pago…"}
       </div>
-      <div className="pm-empty-sub">Cuando llegue un pago aparecerá automáticamente.</div>
     </div>
   );
 }
@@ -201,77 +155,42 @@ const THEMES = {
   },
 };
 
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme": "midnight",
-  "showHero": false,
-  "density": "regular",
-  "showId": false
-}/*EDITMODE-END*/;
+const TWEAK_DEFAULTS = { "theme": "midnight", "density": "regular" };
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const { payments, lastSyncAt, connected, hasLoaded } = usePaymentsFeed();
   const now = useNow(1000);
   const themeVars = THEMES[t.theme] || THEMES.midnight;
-  const latest = payments[0];
-  const rows = t.showHero ? payments.slice(1, MAX_ROWS) : payments.slice(0, MAX_ROWS);
   const isEmpty = payments.length === 0;
   return (
-    <div className="pm-root" style={themeVars} data-show-id={t.showId ? "1" : "0"}>
-      <header className="pm-header">
-        <div className="pm-brand">
-          <div className="pm-brand-mark">
-            <span className="pm-brand-bar" /><span className="pm-brand-bar" /><span className="pm-brand-bar" />
-          </div>
-          <div className="pm-brand-text">
-            <div className="pm-brand-title">Panadería · Monitor</div>
-            <div className="pm-brand-sub">Transferencias en tiempo real</div>
-          </div>
-        </div>
-        <div className="pm-header-right">
-          <StatusPill connected={connected} lastSyncAt={lastSyncAt} now={now} />
-          <Clock now={now} />
-        </div>
-      </header>
+    <div className="pm-root" style={themeVars}>
       {isEmpty ? <EmptyState hasLoaded={hasLoaded} /> : (
-        <React.Fragment>
-          {t.showHero && <HeroLatest payment={latest} now={now} accent={themeVars["--accent"]} />}
-          <section className="pm-list-wrap">
-            <div className="pm-list-head">
-              <div className="pm-col-num">#</div>
-              <div className="pm-col-time">Hora</div>
-              <div className="pm-col-payer">Pagador</div>
-              <div className="pm-col-method">Medio</div>
-              <div className="pm-col-id">ID</div>
-              <div className="pm-col-amount">Monto</div>
-            </div>
-            <div className="pm-list" data-density={t.density}>
-              {rows.map((p, i) => (
-                <PaymentRow key={p.id} p={p} idx={i} now={now}
-                  isNewest={!t.showHero && i === 0} density={t.density} />
-              ))}
-            </div>
-          </section>
-        </React.Fragment>
+        <section className="pm-list-wrap">
+          <div className="pm-list-head">
+            <div className="pm-col-num">#</div>
+            <div className="pm-col-time">Hora</div>
+            <div className="pm-col-payer">Pagador</div>
+            <div className="pm-col-method">Medio</div>
+            <div className="pm-col-amount">Monto</div>
+          </div>
+          <div className="pm-list" data-density={t.density}>
+            {payments.map((p, i) => (
+              <PaymentRow key={p.id} p={p} idx={i} now={now} density={t.density} />
+            ))}
+          </div>
+        </section>
       )}
       <footer className="pm-footer">
-        <span className="pm-footer-item">Mostrando últimas {t.showHero ? MAX_ROWS - 1 : MAX_ROWS} transferencias</span>
-        <span className="pm-footer-dot">·</span>
-        <span className="pm-footer-item">MercadoPago API v1</span>
-        <span className="pm-footer-dot">·</span>
-        <span className="pm-footer-item">Actualización automática cada 5 s</span>
+        <span className="pm-footer-item">Mercado Pago · últimas {MAX_ROWS} transferencias · actualiza cada 5s</span>
       </footer>
       <TweaksPanel>
         <TweakSection label="Tema" />
         <TweakRadio label="Theme" value={t.theme} options={["midnight", "paper", "console"]}
                     onChange={(v) => setTweak("theme", v)} />
-        <TweakSection label="Diseño" />
-        <TweakToggle label="Mostrar última transferencia destacada" value={t.showHero}
-                     onChange={(v) => setTweak("showHero", v)} />
+        <TweakSection label="Densidad" />
         <TweakRadio label="Densidad" value={t.density} options={["compact", "regular", "comfy"]}
                     onChange={(v) => setTweak("density", v)} />
-        <TweakToggle label="Mostrar ID de pago" value={t.showId}
-                     onChange={(v) => setTweak("showId", v)} />
       </TweaksPanel>
     </div>
   );
