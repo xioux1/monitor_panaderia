@@ -71,9 +71,21 @@ function renderPayments(payments) {
     </tr>
   `).join('');
 
-  const approved = payments.filter(p => p.status === 'approved');
-  totalAmountEl.textContent = formatCurrency(approved.reduce((s, p) => s + p.amount, 0));
-  approvedCountEl.textContent = approved.length;
+  const todayStr = new Date().toLocaleDateString('es-AR');
+  const todayPayments = payments.filter(p =>
+    p.status === 'approved' &&
+    new Date(p.date_created).toLocaleDateString('es-AR') === todayStr
+  );
+
+  totalAmountEl.textContent = formatCurrency(todayPayments.reduce((s, p) => s + p.amount, 0));
+  approvedCountEl.textContent = todayPayments.length;
+
+  const totalSubEl = document.getElementById('total-sub');
+  if (totalSubEl) {
+    totalSubEl.textContent = todayPayments.length === 0
+      ? 'Sin pagos hoy aún'
+      : `${todayPayments.length} pago${todayPayments.length !== 1 ? 's' : ''}`;
+  }
 }
 
 async function refresh() {
