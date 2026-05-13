@@ -8,6 +8,7 @@ const MAX_ROWS = 7;
 
 // ─── Derive friendly name from email prefix ──────────────────────────────
 const _NAMES = [
+  // Nombres completos largos primero (el sort los reordena pero igual los listamos)
   "alejandro","alejandra","maximiliano","maximiliana","florencia","sebastian",
   "valentina","valentino","carolina","ezequiel","federico","gabriela","agustina",
   "marcela","mariana","daniela","patricia","claudia","lorena","viviana","silvana",
@@ -26,6 +27,27 @@ const _NAMES = [
   "belen","noelia","romina","sandra","laura","maria","yesica","jessica",
   "mercedes","adriana","paola","cecilia","roxana","delia","irma","rita",
   "nora","olga","ines","elisa","rosa","ana",
+  // Nombres adicionales
+  "nicolas","emiliano","thiago","benjamin","samuel","constanza","constance",
+  "renata","camilo","adriano","joaquina","sebastiana","valentino","mauricio",
+  "ezequiela","ignacia","maxima","bautista","augusto","augustina","luciana",
+  "luciano","cristina","cristiano","mariano","mariana","carolina","florencio",
+  "antonella","maricel","marisol","maribel","lourdes","azul","milagros",
+  "pilar","rocio","abril","candela","julieta","victoria","eliana","estefania",
+  "debora","veronica","alejandrina","guadalupe","dolores","esperanza",
+  "trinidad","fernanda","yolanda","graciela","alejandrina","albertina",
+  "bernardita","evangelina","natividad","concepcion","guillermo","edmundo",
+  "osvaldo","ernestina","celestino","celestina","gilberto","isidro",
+  "leopoldo","balthazar","augusto","esteban","esteban","fabian","gaston",
+  // Diminutivos y apodos argentinos muy comunes
+  "santi","nacho","guille","pachi","cacho","tito","mati","gato","nene",
+  "nena","nati","vicky","caro","fer","gabi","mili","belu","sofi","juli",
+  "pau","dani","vane","tere","flor","ceci","silvi","vivi","lore","moni",
+  "clari","romi","fran","seba","nico","benja","luchi","pilu","bruni",
+  "joaco","tobi","fabi","vale","agu","charly","charo","paty","mago",
+  "chio","titi","pipi","colo","kike","quique","roque","pepe","lalo",
+  "nando","beto","walo","chino","china","negra","negro","gordo","gorda",
+  "flaco","flaca","pelado","pelada","tano","gringa","gringo","turco",
 ].sort((a, b) => b.length - a.length);
 
 function nameFromEmail(email) {
