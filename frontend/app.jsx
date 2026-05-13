@@ -287,7 +287,7 @@ function EmptyState({ hasLoaded }) {
 // ─── App ────────────────────────────────────────────────────────────────
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "warm",
-  "showRows": 5,
+  "showRows": 4,
   "showEmail": true,
   "highlightNew": "celebratory",
   "showAvatars": false
