@@ -6,13 +6,6 @@ const { useState, useEffect, useRef } = React;
 const POLL_INTERVAL = 5_000;
 const MAX_ROWS = 7;
 
-// ─── MercadoPago payment_method_id → badge type ───────────────────────────
-function methodBadgeType(methodId) {
-  if (!methodId) return 'mp';
-  if (methodId === 'cash' || methodId === 'efectivo') return 'cash';
-  return 'mp';
-}
-
 // ─── Derive friendly name from email prefix ──────────────────────────────
 const _NAMES = [
   "alejandro","alejandra","maximiliano","maximiliana","florencia","sebastian",
@@ -72,7 +65,6 @@ function normalizePayment(raw) {
     first,
     last,
     email: raw.payer_email || null,
-    method: methodBadgeType(raw.payment_method_id),
     amount: Number(raw.amount) || 0,
     ts: raw.date_created ? new Date(raw.date_created).getTime() : Date.now(),
     isNew: false,
@@ -220,23 +212,6 @@ function LiveIndicator({ connected, now }) {
   );
 }
 
-function MethodBadge({ method }) {
-  if (method === 'cash') {
-    return (
-      <span className="method cash">
-        <span className="method-dot" />
-        Efectivo
-      </span>
-    );
-  }
-  return (
-    <span className="method mp">
-      <span className="method-dot" />
-      MercadoPago
-    </span>
-  );
-}
-
 function Row({ r, idx, now, showEmail, highlightNew, showAvatars }) {
   const newClass = r.isNew && highlightNew !== 'off' ? 'is-new' : '';
   return (
@@ -261,7 +236,6 @@ function Row({ r, idx, now, showEmail, highlightNew, showAvatars }) {
           )}
         </div>
       </div>
-      <div><MethodBadge method={r.method} /></div>
       <div className="amount">
         <span className="plus">+</span>
         <span className="cur">$</span>
@@ -318,7 +292,6 @@ function App() {
             <div>#</div>
             <div>Hora</div>
             <div>Pagador</div>
-            <div>Medio</div>
             <div>Monto</div>
           </div>
           <div className="tbody">

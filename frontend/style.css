@@ -191,7 +191,7 @@ body {
 }
 .thead {
   display: grid;
-  grid-template-columns: 48px 1.2fr 3fr 1.6fr 2fr;
+  grid-template-columns: 48px 1.2fr 3fr 2.5fr;
   gap: 24px;
   padding: 0 24px 14px;
   font-family: 'Geist Mono', monospace;
@@ -216,7 +216,7 @@ body {
 
 .row {
   display: grid;
-  grid-template-columns: 48px 1.2fr 3fr 1.6fr 2fr;
+  grid-template-columns: 48px 1.2fr 3fr 2.5fr;
   gap: 24px;
   padding: 0 24px;
   align-items: center;
@@ -295,7 +295,7 @@ body {
 .payer-name {
   font-family: 'Bricolage Grotesque', serif;
   font-weight: 700;
-  font-size: clamp(32px, 7vh, 96px);
+  font-size: clamp(36px, 9vh, 124px);
   color: var(--ink);
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -313,28 +313,11 @@ body {
   overflow: hidden; text-overflow: ellipsis;
 }
 
-.method {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: clamp(6px, 1vh, 14px) 20px;
-  border-radius: 999px;
-  font-size: clamp(14px, 2.4vh, 30px);
-  font-weight: 600;
-  width: fit-content;
-  white-space: nowrap;
-}
-.method.mp { background: var(--mp-bg); color: var(--mp-ink); }
-.method.cash { background: var(--cash-bg); color: var(--cash-ink); }
-.method-dot {
-  width: 7px; height: 7px; border-radius: 999px;
-  background: currentColor;
-  flex-shrink: 0;
-}
-
 .amount {
   text-align: right;
   font-family: 'Bricolage Grotesque', serif;
   font-weight: 700;
-  font-size: clamp(42px, 8vh, 108px);
+  font-size: clamp(48px, 10.5vh, 144px);
   color: var(--ink);
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
