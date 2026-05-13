@@ -162,6 +162,7 @@ function usePaymentsFeed() {
   const [connected, setConnected]  = useState(false);
   const [hasLoaded, setHasLoaded]  = useState(false);
   const prevIdsRef = useRef(new Set());
+  const failsRef = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -173,6 +174,7 @@ function usePaymentsFeed() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (cancelled) return;
+        failsRef.current = 0;
         const list = (data.payments || []).map(normalizePayment).slice(0, MAX_ROWS);
         const prevIds = prevIdsRef.current;
         const withNew = list.map((p, idx) => ({
@@ -185,10 +187,17 @@ function usePaymentsFeed() {
         setConnected(true);
         setHasLoaded(true);
       } catch (err) {
-        if (!cancelled) setConnected(false);
+        if (cancelled) return;
+        setConnected(false);
+        failsRef.current += 1;
         console.error("[/api/payments]", err);
+        if (failsRef.current >= 3) {
+          console.log("[/api/payments] 3 fallos consecutivos, recargando en 10s…");
+          setTimeout(() => window.location.reload(), 10_000);
+          return;
+        }
       } finally {
-        if (!cancelled) timer = setTimeout(tick, POLL_INTERVAL);
+        if (!cancelled && failsRef.current < 3) timer = setTimeout(tick, POLL_INTERVAL);
       }
     }
 
