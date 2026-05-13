@@ -80,7 +80,7 @@ body {
   flex-direction: column;
   background: var(--bg);
   color: var(--ink);
-  padding: 28px 40px 24px;
+  padding: 28px 40px 28px;
   gap: 22px;
 }
 
@@ -183,7 +183,7 @@ body {
 }
 .thead {
   display: grid;
-  grid-template-columns: 48px 1.2fr 3fr 2.5fr;
+  grid-template-columns: 1.2fr 3fr 2.5fr;
   gap: 24px;
   padding: 0 24px 14px;
   font-family: 'Geist Mono', monospace;
@@ -208,7 +208,7 @@ body {
 
 .row {
   display: grid;
-  grid-template-columns: 48px 1.2fr 3fr 2.5fr;
+  grid-template-columns: 1.2fr 3fr 2.5fr;
   gap: 24px;
   padding: 0 24px;
   align-items: center;
@@ -241,14 +241,6 @@ body {
 @keyframes bar-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
-}
-
-.rank {
-  font-family: 'Geist Mono', monospace;
-  color: var(--ink-4);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
 }
 
 .time {
@@ -340,21 +332,6 @@ body {
   font-family: 'Geist Mono', monospace;
   font-size: 12px;
   letter-spacing: 0.08em;
-}
-
-/* ============ FOOTER ============ */
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px solid var(--divider);
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  flex-shrink: 0;
 }
 
 /* ============ AVATAR PALETTE ============ */

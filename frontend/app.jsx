@@ -215,7 +215,6 @@ function Row({ r, idx, now, showEmail, highlightNew, showAvatars }) {
   const newClass = r.isNew && highlightNew !== 'off' ? 'is-new' : '';
   return (
     <div className={`row ${newClass}`}>
-      <div className="rank">{String(idx + 1).padStart(2, '0')}</div>
       <div className="time">
         <div className="time-rel">{relTime(r.ts, now)}</div>
         <div className="time-abs">{absTime(r.ts)}</div>
@@ -288,7 +287,6 @@ function App() {
       ) : (
         <div className="table-wrap">
           <div className="thead">
-            <div>#</div>
             <div>Hora</div>
             <div>Pagador</div>
             <div>Monto</div>
@@ -310,14 +308,6 @@ function App() {
           </div>
         </div>
       )}
-
-      <div className="footer">
-        <div>
-          {isConnected
-            ? `Sincronizado · hace ${ageS}s`
-            : 'Reconectando…'}
-        </div>
-      </div>
 
       <TweaksPanel title="Tweaks">
         <TweakSection label="Tema">
