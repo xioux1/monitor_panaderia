@@ -36,7 +36,7 @@ const _NAMES = [
 ].sort((a, b) => b.length - a.length);
 
 function nameFromEmail(email) {
-  if (!email) return { first: "—", last: "" };
+  if (!email) return { first: "Transferencia", last: "" };
   const local = String(email).split("@")[0] || "";
   if (!local) return { first: email, last: "" };
 
