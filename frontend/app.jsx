@@ -39,6 +39,8 @@ const _NAMES = [
   "bernardita","evangelina","natividad","concepcion","guillermo","edmundo",
   "osvaldo","ernestina","celestino","celestina","gilberto","isidro",
   "leopoldo","balthazar","augusto","esteban","esteban","fabian","gaston",
+  "eduardo","adolfo","alfonsina","osvaldo","reinaldo","rolando","orlando",
+  "armando","arnaldo","gerardo","leonardo","alejandro","bernardo","fernando",
   // Diminutivos y apodos argentinos muy comunes
   "simon",
   "santi","nacho","guille","pachi","cacho","tito","mati","gato","nene",
@@ -64,17 +66,27 @@ function nameFromEmail(email) {
   if (parts.length === 0) return { first: cap(local), last: "" };
 
   const word = parts[0].toLowerCase();
-  for (const name of _NAMES) {
-    if (word.startsWith(name) && word.length > name.length) {
-      return { first: cap(name), last: cap(word.slice(name.length)) };
+  const segments = [];
+  let rem = word;
+  while (rem.length > 0) {
+    let found = false;
+    for (const name of _NAMES) {
+      if (rem.startsWith(name)) {
+        segments.push(name); rem = rem.slice(name.length); found = true; break;
+      }
     }
-  }
-  for (const name of _NAMES) {
-    if (word.endsWith(name) && word.length > name.length) {
-      return { first: cap(name), last: cap(word.slice(0, word.length - name.length)) };
+    if (!found) {
+      for (const name of _NAMES) {
+        if (rem.endsWith(name) && rem.length > name.length) {
+          segments.push(rem.slice(0, rem.length - name.length));
+          segments.push(name); rem = ""; found = true; break;
+        }
+      }
     }
+    if (!found) { segments.push(rem); break; }
   }
-  return { first: cap(parts[0]), last: "" };
+  if (segments.length >= 2) return { first: cap(segments[0]), last: segments.slice(1).map(cap).join(" ") };
+  return { first: cap(segments[0] || word), last: "" };
 }
 
 // ─── Normalize an MP payment row from /api/payments ─────────────────────
