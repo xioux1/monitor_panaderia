@@ -99,8 +99,7 @@ const fmtAmount = (n) => n.toLocaleString('es-AR');
 
 const relTime = (ts, now) => {
   const diff = Math.max(0, Math.floor((now - ts) / 1000));
-  if (diff < 10) return 'ahora';
-  if (diff < 60) return `hace ${diff} s`;
+  if (diff < 60) return 'ahora';
   const m = Math.floor(diff / 60);
   if (m < 60) return `hace ${m} min`;
   const h = Math.floor(m / 60);
