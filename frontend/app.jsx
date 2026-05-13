@@ -8,7 +8,6 @@ const MAX_ROWS = 7;
 
 // ─── Derive friendly name from email prefix ──────────────────────────────
 const _NAMES = [
-  // Nombres completos largos primero (el sort los reordena pero igual los listamos)
   "alejandro","alejandra","maximiliano","maximiliana","florencia","sebastian",
   "valentina","valentino","carolina","ezequiel","federico","gabriela","agustina",
   "marcela","mariana","daniela","patricia","claudia","lorena","viviana","silvana",
@@ -27,7 +26,6 @@ const _NAMES = [
   "belen","noelia","romina","sandra","laura","maria","yesica","jessica",
   "mercedes","adriana","paola","cecilia","roxana","delia","irma","rita",
   "nora","olga","ines","elisa","rosa","ana",
-  // Nombres adicionales
   "nicolas","emiliano","thiago","benjamin","samuel","constanza","constance",
   "renata","camilo","adriano","joaquina","sebastiana","valentino","mauricio",
   "ezequiela","ignacia","maxima","bautista","augusto","augustina","luciana",
@@ -41,7 +39,6 @@ const _NAMES = [
   "leopoldo","balthazar","augusto","esteban","esteban","fabian","gaston",
   "eduardo","adolfo","alfonsina","osvaldo","reinaldo","rolando","orlando",
   "armando","arnaldo","gerardo","leonardo","alejandro","bernardo","fernando",
-  // Diminutivos y apodos argentinos muy comunes
   "simon",
   "santi","nacho","guille","pachi","cacho","tito","mati","gato","nene",
   "nena","nati","vicky","caro","fer","gabi","mili","belu","sofi","juli",
@@ -199,7 +196,6 @@ function usePaymentsFeed() {
     return () => { cancelled = true; if (timer) clearTimeout(timer); };
   }, []);
 
-  // Clear isNew flag after animation completes
   useEffect(() => {
     if (rows[0]?.isNew) {
       const id = setTimeout(() => {
@@ -320,11 +316,6 @@ function App() {
         <EmptyState hasLoaded={hasLoaded} />
       ) : (
         <div className="table-wrap">
-          <div className="thead">
-            <div>Hora</div>
-            <div>Pagador</div>
-            <div>Monto</div>
-          </div>
           <div className="tbody">
             <div className="rows">
               {visibleRows.map((r, i) => (

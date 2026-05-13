@@ -183,20 +183,6 @@ body {
   flex-direction: column;
   min-height: 0;
 }
-.thead {
-  display: grid;
-  grid-template-columns: 1.2fr 3fr 2.5fr;
-  gap: 24px;
-  padding: 0 24px 14px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  border-bottom: 1px solid var(--divider);
-  flex-shrink: 0;
-}
-.thead > div:last-child { text-align: right; }
 
 .tbody {
   flex: 1; min-height: 0;
