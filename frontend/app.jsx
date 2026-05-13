@@ -40,6 +40,7 @@ const _NAMES = [
   "osvaldo","ernestina","celestino","celestina","gilberto","isidro",
   "leopoldo","balthazar","augusto","esteban","esteban","fabian","gaston",
   // Diminutivos y apodos argentinos muy comunes
+  "simon",
   "santi","nacho","guille","pachi","cacho","tito","mati","gato","nene",
   "nena","nati","vicky","caro","fer","gabi","mili","belu","sofi","juli",
   "pau","dani","vane","tere","flor","ceci","silvi","vivi","lore","moni",
