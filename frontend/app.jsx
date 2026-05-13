@@ -193,7 +193,7 @@ function usePaymentsFeed() {
     if (rows[0]?.isNew) {
       const id = setTimeout(() => {
         setRows(prev => prev.map((r, i) => i === 0 ? { ...r, isNew: false } : r));
-      }, 4200);
+      }, 12500);
       return () => clearTimeout(id);
     }
   }, [rows[0]?.id]);
