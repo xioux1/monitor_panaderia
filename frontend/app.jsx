@@ -4,7 +4,7 @@
 const { useState, useEffect, useRef } = React;
 
 const POLL_INTERVAL = 5_000;
-const MAX_ROWS = 8;
+const MAX_ROWS = 7;
 
 // ─── MercadoPago payment_method_id → badge type ───────────────────────────
 function methodBadgeType(methodId) {
@@ -287,7 +287,7 @@ function EmptyState({ hasLoaded }) {
 // ─── App ────────────────────────────────────────────────────────────────
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "warm",
-  "density": "comfortable",
+  "showRows": 5,
   "showEmail": true,
   "highlightNew": "celebratory",
   "showAvatars": false
@@ -301,6 +301,7 @@ function App() {
 
   const ageS = lastSyncAt ? Math.floor((now - lastSyncAt) / 1000) : null;
   const isConnected = connected && ageS != null && ageS < 15;
+  const visibleRows = rows.slice(0, t.showRows);
 
   return (
     <div className="monitor" data-theme={t.theme}>
@@ -322,7 +323,7 @@ function App() {
           </div>
           <div className="tbody">
             <div className="rows">
-              {rows.map((r, i) => (
+              {visibleRows.map((r, i) => (
                 <Row
                   key={r.id}
                   r={r}
@@ -361,6 +362,17 @@ function App() {
           />
         </TweakSection>
         <TweakSection label="Layout">
+          <TweakRadio
+            label="Filas"
+            value={t.showRows}
+            options={[
+              { value: 3, label: '3' },
+              { value: 4, label: '4' },
+              { value: 5, label: '5' },
+              { value: 6, label: '6' },
+            ]}
+            onChange={(v) => setTweak('showRows', Number(v))}
+          />
           <TweakToggle
             label="Mostrar email"
             value={t.showEmail}
