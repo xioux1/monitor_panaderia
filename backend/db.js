@@ -24,7 +24,10 @@ async function upsertPayment(payment) {
     `INSERT INTO payments
        (payment_id, amount, status, payment_method_id, date_created, payer_email, payer_first_name, payer_last_name)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-     ON CONFLICT (payment_id) DO NOTHING`,
+     ON CONFLICT (payment_id) DO UPDATE SET
+       payer_email      = EXCLUDED.payer_email,
+       payer_first_name = EXCLUDED.payer_first_name,
+       payer_last_name  = EXCLUDED.payer_last_name`,
     [
       String(payment.id),
       payment.transaction_amount ?? 0,
