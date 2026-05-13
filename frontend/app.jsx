@@ -189,7 +189,6 @@ function Brand() {
       <div className="brand-name">
         Rubiño<span className="seed" />
       </div>
-      <div className="brand-tag">Pan Francés · Desde 1999</div>
     </div>
   );
 }
@@ -318,7 +317,6 @@ function App() {
             ? `Sincronizado · hace ${ageS}s`
             : 'Reconectando…'}
         </div>
-        <div className="footer-logo">RUBIÑO</div>
       </div>
 
       <TweaksPanel title="Tweaks">
