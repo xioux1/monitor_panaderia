@@ -208,8 +208,17 @@ function usePaymentsFeed() {
       }
     }
 
+    function handleOnline() {
+      if (failsRef.current >= 3) window.location.reload();
+    }
+    window.addEventListener('online', handleOnline);
+
     tick();
-    return () => { cancelled = true; if (timer) clearTimeout(timer); };
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+      window.removeEventListener('online', handleOnline);
+    };
   }, []);
 
   useEffect(() => {
