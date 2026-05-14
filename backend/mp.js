@@ -89,8 +89,21 @@ async function fetchRecentPayments(ownerUserId) {
 
       if (!payerIsOwner) return p;
 
-      // Payer field has the merchant's own data — fetch full detail to look
-      // for the real sender in additional_info / metadata.
+      // Use collector_id to determine direction before fetching detail.
+      // If the owner is the payer but NOT the collector, it is outgoing (e.g.
+      // paying a provider) and must be excluded from the monitor.
+      const collectorIsOwner =
+        p.collector_id != null &&
+        String(p.collector_id) === String(ownerUserId);
+
+      if (p.collector_id != null && !collectorIsOwner) {
+        console.log(`[mp] filtering out outgoing payment ${p.id} — collector is not owner`);
+        return null;
+      }
+
+      // collector_id is missing or equals owner: incoming payment routed through
+      // the merchant account (e.g. Uala, Naranja X). Fetch full detail to
+      // recover the real sender.
       const detail = await fetchPaymentDetail(p.id);
       const sender = extractSenderFromDetail(detail);
 
@@ -99,10 +112,10 @@ async function fetchRecentPayments(ownerUserId) {
         return { ...p, payer: { ...p.payer, ...sender } };
       }
 
-      // No real sender found → this is an outgoing payment (merchant paying a
-      // provider). Exclude it so only incoming transfers appear in the monitor.
-      console.log(`[mp] filtering out outgoing payment ${p.id} (${p.payment_method_id}) — payer is owner and no sender found`);
-      return null;
+      // Incoming payment but sender unrecoverable — keep it with null payer
+      // rather than risk dropping a legitimate payment.
+      console.log(`[mp] no sender found for incoming payment ${p.id} (${p.payment_method_id}) — keeping with null payer`);
+      return { ...p, payer: { ...p.payer, first_name: null, last_name: null, email: null } };
     })
   );
 
