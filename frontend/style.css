@@ -337,3 +337,23 @@ body {
 [data-theme="midnight"] .ap-3 { background: oklch(0.32 0.1 80); color: oklch(0.85 0.14 80); }
 [data-theme="midnight"] .ap-4 { background: oklch(0.32 0.1 320); color: oklch(0.85 0.14 320); }
 [data-theme="midnight"] .ap-5 { background: oklch(0.32 0.1 200); color: oklch(0.85 0.14 200); }
+
+/* ============ RECONNECT BANNER ============ */
+.reconnect-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: oklch(0.42 0.18 25);
+  color: oklch(0.97 0.01 80);
+  text-align: center;
+  padding: 14px 24px;
+  font-family: 'Geist Mono', monospace;
+  font-size: clamp(14px, 2vh, 20px);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  animation: banner-slide-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes banner-slide-in {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}

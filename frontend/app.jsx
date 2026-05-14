@@ -161,6 +161,7 @@ function usePaymentsFeed() {
   const [lastSyncAt, setLastSync]  = useState(0);
   const [connected, setConnected]  = useState(false);
   const [hasLoaded, setHasLoaded]  = useState(false);
+  const [reloading, setReloading]  = useState(false);
   const prevIdsRef = useRef(new Set());
   const failsRef = useRef(0);
 
@@ -193,6 +194,7 @@ function usePaymentsFeed() {
         console.error("[/api/payments]", err);
         if (failsRef.current >= 3) {
           console.log("[/api/payments] 3 fallos consecutivos, recargando en 10s…");
+          setReloading(true);
           setTimeout(() => window.location.reload(), 10_000);
           return;
         }
@@ -214,7 +216,7 @@ function usePaymentsFeed() {
     }
   }, [rows[0]?.id]);
 
-  return { rows, lastSyncAt, connected, hasLoaded };
+  return { rows, lastSyncAt, connected, hasLoaded, reloading };
 }
 
 // ─── Components ──────────────────────────────────────────────────────────
@@ -282,6 +284,20 @@ function Row({ r, idx, now, showEmail, highlightNew, showAvatars }) {
   );
 }
 
+function ReconnectBanner() {
+  const [secs, setSecs] = useState(10);
+  useEffect(() => {
+    if (secs <= 0) return;
+    const id = setTimeout(() => setSecs(s => s - 1), 1000);
+    return () => clearTimeout(id);
+  }, [secs]);
+  return (
+    <div className="reconnect-banner">
+      ⚠️ Reconectando… recargando en {secs}s
+    </div>
+  );
+}
+
 function EmptyState({ hasLoaded }) {
   return (
     <div className="empty-state">
@@ -306,7 +322,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const { rows, lastSyncAt, connected, hasLoaded } = usePaymentsFeed();
+  const { rows, lastSyncAt, connected, hasLoaded, reloading } = usePaymentsFeed();
   const now = useNow(1000);
   useAutoReload(30_000);
 
@@ -316,6 +332,7 @@ function App() {
 
   return (
     <div className="monitor" data-theme={t.theme}>
+      {reloading && <ReconnectBanner />}
       <div className="topbar">
         <Brand />
         <LiveIndicator connected={isConnected} now={now} />
