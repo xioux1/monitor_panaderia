@@ -99,27 +99,14 @@ async function fetchRecentPayments(ownerUserId) {
         return { ...p, payer: { ...p.payer, ...sender } };
       }
 
-      // Log the raw detail once so we can inspect what fields are available
-      // for this payment type and improve extraction in the future.
-      console.log(
-        `[mp] no sender found for payment ${p.id} (${p.payment_method_id}) — raw detail:`,
-        JSON.stringify({
-          payer:            detail?.payer,
-          additional_info:  detail?.additional_info,
-          metadata:         detail?.metadata,
-          transaction_details: detail?.transaction_details,
-          order:            detail?.order,
-        }, null, 2)
-      );
-
-      return {
-        ...p,
-        payer: { ...p.payer, first_name: null, last_name: null, email: null },
-      };
+      // No real sender found → this is an outgoing payment (merchant paying a
+      // provider). Exclude it so only incoming transfers appear in the monitor.
+      console.log(`[mp] filtering out outgoing payment ${p.id} (${p.payment_method_id}) — payer is owner and no sender found`);
+      return null;
     })
   );
 
-  return results;
+  return results.filter(Boolean);
 }
 
 module.exports = { fetchRecentPayments, fetchAccountOwnerId };
