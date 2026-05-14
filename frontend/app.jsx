@@ -175,6 +175,11 @@ function usePaymentsFeed() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (cancelled) return;
+        if (failsRef.current >= 3) {
+          // connection recovered — reload for clean state
+          window.location.reload();
+          return;
+        }
         failsRef.current = 0;
         const list = (data.payments || []).map(normalizePayment).slice(0, MAX_ROWS);
         const prevIds = prevIdsRef.current;
@@ -193,13 +198,13 @@ function usePaymentsFeed() {
         failsRef.current += 1;
         console.error("[/api/payments]", err);
         if (failsRef.current >= 3) {
-          console.log("[/api/payments] 3 fallos consecutivos, recargando en 10s…");
           setReloading(true);
-          setTimeout(() => window.location.reload(), 10_000);
-          return;
         }
       } finally {
-        if (!cancelled && failsRef.current < 3) timer = setTimeout(tick, POLL_INTERVAL);
+        if (!cancelled) {
+          const delay = failsRef.current >= 3 ? POLL_INTERVAL * 2 : POLL_INTERVAL;
+          timer = setTimeout(tick, delay);
+        }
       }
     }
 
@@ -285,15 +290,9 @@ function Row({ r, idx, now, showEmail, highlightNew, showAvatars }) {
 }
 
 function ReconnectBanner() {
-  const [secs, setSecs] = useState(10);
-  useEffect(() => {
-    if (secs <= 0) return;
-    const id = setTimeout(() => setSecs(s => s - 1), 1000);
-    return () => clearTimeout(id);
-  }, [secs]);
   return (
     <div className="reconnect-banner">
-      ⚠️ Reconectando… recargando en {secs}s
+      ⚠️ Reconectando… se recargará automáticamente cuando vuelva la señal
     </div>
   );
 }
