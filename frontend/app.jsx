@@ -235,9 +235,10 @@ function usePaymentsFeed() {
 
 // ─── Components ──────────────────────────────────────────────────────────
 function Brand({ config }) {
+  const openTweaks = () => window.postMessage({ type: '__activate_edit_mode' }, '*');
   if (config.logoUrl) {
     return (
-      <div className="brand">
+      <div className="brand" onDoubleClick={openTweaks}>
         <img className="brand-logo" src={config.logoUrl} alt={config.businessName || 'Logo'} />
         {config.businessName && (
           <div className="brand-name brand-name--small">
@@ -248,7 +249,7 @@ function Brand({ config }) {
     );
   }
   return (
-    <div className="brand">
+    <div className="brand" onDoubleClick={openTweaks}>
       <div className="brand-eyebrow">
         <span className="rule" />
         <span>{config.businessCategory || 'Panadería'}</span>
