@@ -1,11 +1,19 @@
 'use strict';
 
-const { Pool } = require('pg');
+const path = require('path');
+const Database = require('better-sqlite3');
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const db = new Database(path.join(__dirname, '..', 'panaderia.db'));
 
-async function initDb() {
-  await pool.query(`
+const INSERT_SQL = `
+  INSERT INTO payments
+    (payment_id, amount, status, payment_method_id, date_created, payer_email, payer_first_name, payer_last_name)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  ON CONFLICT (payment_id) DO NOTHING
+`;
+
+function initDb() {
+  db.exec(`
     CREATE TABLE IF NOT EXISTS payments (
       payment_id        TEXT PRIMARY KEY,
       amount            REAL NOT NULL,
@@ -17,32 +25,28 @@ async function initDb() {
       payer_last_name   TEXT
     )
   `);
+  return Promise.resolve();
 }
 
-async function upsertPayment(payment) {
-  await pool.query(
-    `INSERT INTO payments
-       (payment_id, amount, status, payment_method_id, date_created, payer_email, payer_first_name, payer_last_name)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-     ON CONFLICT (payment_id) DO NOTHING`,
-    [
-      String(payment.id),
-      payment.transaction_amount ?? 0,
-      payment.status,
-      payment.payment_method_id ?? null,
-      payment.date_created,
-      payment.payer?.email ?? null,
-      payment.payer?.first_name ?? null,
-      payment.payer?.last_name ?? null,
-    ]
+function upsertPayment(payment) {
+  db.prepare(INSERT_SQL).run(
+    String(payment.id),
+    payment.transaction_amount ?? 0,
+    payment.status,
+    payment.payment_method_id ?? null,
+    payment.date_created,
+    payment.payer?.email ?? null,
+    payment.payer?.first_name ?? null,
+    payment.payer?.last_name ?? null,
   );
+  return Promise.resolve();
 }
 
-async function listPayments() {
-  const { rows } = await pool.query(
+function listPayments() {
+  const rows = db.prepare(
     `SELECT * FROM payments ORDER BY date_created DESC LIMIT 20`
-  );
-  return rows;
+  ).all();
+  return Promise.resolve(rows);
 }
 
 module.exports = { initDb, upsertPayment, listPayments };
