@@ -84,8 +84,8 @@ body {
   gap: 22px;
 }
 
-/* ============ TOP BAR ============ */
-.topbar {
+/* ============ SIDEBAR / TOP BAR ============ */
+.sidebar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -93,6 +93,13 @@ body {
   padding-bottom: 18px;
   border-bottom: 1px solid var(--divider);
   flex-shrink: 0;
+}
+
+.main-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .brand {
@@ -356,4 +363,74 @@ body {
 @keyframes banner-slide-in {
   from { transform: translateY(-100%); opacity: 0; }
   to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* ============ LOGO ============ */
+.brand-logo {
+  height: clamp(40px, 6vh, 80px);
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+}
+.brand-name--small {
+  font-size: 28px;
+  margin-top: 6px;
+}
+
+/* ============ RESPONSIVE LAYOUTS ============ */
+
+/* Split: brand sidebar on left, payments on right */
+@media (min-width: 768px) {
+  .monitor[data-layout="split"] {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 28px 0 28px 40px;
+    gap: 0;
+  }
+  .monitor[data-layout="split"] .sidebar {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: none;
+    border-right: 1px solid var(--divider);
+    padding-bottom: 28px;
+    padding-right: 32px;
+    width: 240px;
+    flex-shrink: 0;
+    gap: 24px;
+  }
+  .monitor[data-layout="split"] .live-cluster {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  .monitor[data-layout="split"] .monitor-clock {
+    font-size: 22px;
+  }
+  .monitor[data-layout="split"] .live-label {
+    font-size: 18px;
+  }
+  .monitor[data-layout="split"] .main-col {
+    padding: 0 40px 0 32px;
+  }
+}
+
+/* Dual: two payment columns side by side */
+@media (min-width: 768px) {
+  .monitor[data-layout="dual"] .tbody {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+    height: 100%;
+  }
+  .monitor[data-layout="dual"] .tbody .rows {
+    border-right: 1px solid var(--divider);
+    padding-right: 12px;
+  }
+  .monitor[data-layout="dual"] .tbody .rows-b {
+    border-right: none;
+    padding-right: 0;
+    padding-left: 12px;
+  }
 }

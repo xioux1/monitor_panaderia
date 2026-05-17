@@ -40,7 +40,7 @@ async function upsertPayment(payment) {
 
 async function listPayments() {
   const { rows } = await pool.query(
-    `SELECT * FROM payments ORDER BY date_created DESC LIMIT 20`
+    `SELECT * FROM payments ORDER BY date_created DESC LIMIT 50`
   );
   return rows;
 }
