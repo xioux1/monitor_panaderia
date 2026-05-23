@@ -97,6 +97,8 @@ function normalizePayment(raw) {
     first,
     last,
     email: raw.payer_email || null,
+    identificationNumber: raw.payer_identification_number || null,
+    identificationType:   raw.payer_identification_type   || null,
     amount: Number(raw.amount) || 0,
     ts: raw.date_created ? new Date(raw.date_created).getTime() : Date.now(),
     isNew: false,
@@ -299,6 +301,12 @@ function Row({ r, idx, now, showEmail, highlightNew, showAvatars }) {
           </div>
           {showEmail && r.email && (
             <div className="payer-email">{r.email}</div>
+          )}
+          {r.identificationNumber && (
+            <div className="payer-identification">
+              <span className="id-type">{r.identificationType || 'ID'}</span>
+              {r.identificationNumber}
+            </div>
           )}
         </div>
       </div>
