@@ -1,53 +1,69 @@
 'use strict';
 
 // Run in Render shell: node scripts/export_transfers.js
-// Requires DATABASE_URL env var (already set in Render service).
+// Requires MP_ACCESS_TOKEN env var (already set in Render service).
+// Fetches the last 20 approved payments and dumps the FULL raw detail
+// from MercadoPago — nothing filtered or pre-selected.
 
-const { Pool } = require('pg');
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const fetch = require('node-fetch');
 
-async function main() {
-  const { rows } = await pool.query(`
-    SELECT
-      payment_id,
-      amount,
-      status,
-      payment_method_id,
-      date_created,
-      payer_email,
-      payer_first_name,
-      payer_last_name
-    FROM payments
-    ORDER BY date_created DESC
-    LIMIT 20
-  `);
+const BASE = 'https://api.mercadopago.com';
+const TOKEN = process.env.MP_ACCESS_TOKEN;
 
-  if (rows.length === 0) {
-    console.log('No hay pagos en la base de datos todavía.');
-    return;
-  }
-
-  console.log(`\n=== Últimas ${rows.length} transferencias ===\n`);
-
-  rows.forEach((p, i) => {
-    const nombre = [p.payer_first_name, p.payer_last_name].filter(Boolean).join(' ') || '(desconocido)';
-    const fecha  = new Date(p.date_created).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });
-    console.log(`#${String(i + 1).padStart(2, '0')} | ${fecha}`);
-    console.log(`     ID:      ${p.payment_id}`);
-    console.log(`     Monto:   $${Number(p.amount).toFixed(2)}`);
-    console.log(`     Estado:  ${p.status}`);
-    console.log(`     Método:  ${p.payment_method_id ?? '-'}`);
-    console.log(`     Pagador: ${nombre}`);
-    console.log(`     Email:   ${p.payer_email ?? '-'}`);
-    console.log('');
-  });
-
-  // También dump JSON crudo al final por si necesitás copiar los datos
-  console.log('=== JSON crudo ===');
-  console.log(JSON.stringify(rows, null, 2));
+if (!TOKEN) {
+  console.error('ERROR: MP_ACCESS_TOKEN no está seteado.');
+  process.exit(1);
 }
 
-main()
-  .catch(err => { console.error('Error:', err.message); process.exit(1); })
-  .finally(() => pool.end());
+async function mpGet(path) {
+  const res = await fetch(`${BASE}${path}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  });
+  const body = await res.json();
+  if (!res.ok) throw new Error(`MP ${res.status} en ${path}: ${JSON.stringify(body)}`);
+  return body;
+}
+
+async function main() {
+  console.log('Buscando últimos 20 pagos aprobados...\n');
+
+  const search = await mpGet(
+    '/v1/payments/search?status=approved&sort=date_created&criteria=desc&limit=20'
+  );
+
+  const list = search.results ?? [];
+  console.log(`Encontrados: ${list.length} pagos. Bajando detalle completo de cada uno...\n`);
+
+  const details = [];
+  for (const p of list) {
+    process.stdout.write(`  Fetching ${p.id}...`);
+    try {
+      const detail = await mpGet(`/v1/payments/${p.id}`);
+      details.push(detail);
+      console.log(' OK');
+    } catch (err) {
+      console.log(` ERROR: ${err.message}`);
+      details.push({ id: p.id, _error: err.message });
+    }
+  }
+
+  console.log('\n=== DETALLE COMPLETO (JSON RAW) ===\n');
+  console.log(JSON.stringify(details, null, 2));
+
+  console.log('\n=== RESUMEN RÁPIDO ===\n');
+  for (const d of details) {
+    if (d._error) { console.log(`[${d.id}] ERROR: ${d._error}`); continue; }
+    const fecha = new Date(d.date_created).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });
+    const nombre = [d.payer?.first_name, d.payer?.last_name].filter(Boolean).join(' ') || '(sin nombre)';
+    console.log(`[${d.id}] ${fecha} | $${d.transaction_amount} | ${d.payment_method_id} | ${nombre} | ${d.payer?.email ?? '-'}`);
+  }
+
+  console.log('\nCampos disponibles en el primer pago:');
+  if (details[0] && !details[0]._error) {
+    console.log(Object.keys(details[0]).join(', '));
+  }
+}
+
+main().catch(err => { console.error('Fatal:', err.message); process.exit(1); });
